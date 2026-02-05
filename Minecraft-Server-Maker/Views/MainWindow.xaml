@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Minecraft_Server_Maker"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MSM.NET" Height="450" Width="800">
     <Grid>
+        <Label FontSize="24" HorizontalAlignment="Center" Content="Minecraft Server Maker [MSM.NET]"/>
         <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Label Content="Select Server Path: " />
+            <Label Content="Select Server Path: " />    
 
             <Grid>
 
@@ -31,6 +32,16 @@
                 <TextBox Text="{Binding ServerName, UpdateSourceTrigger=PropertyChanged}" FontSize="16" Width="200" Height="30" />
             <TextBlock Text="{Binding ServerName}" Margin="10"  FontSize="18" Foreground="Green" />
                 </StackPanel>
+        </StackPanel>
+        
+        <StackPanel>
+            <CheckBox Margin="300, 280" Content="Content Only Local Server" 
+                      FontSize="12" Checked="{Binding CheckedLocalStatus}" 
+                      Unchecked="{Binding UnCheckedLocalStatus}" />
+        </StackPanel>
+        
+        <StackPanel>
+            <!-- Przygotowac NumberBoxa -->
         </StackPanel>
     </Grid>
 </Window>
