@@ -32,10 +32,17 @@ public class MainViewModel : ViewModelBase
 		}
 	}
 	
-	public bool LocalStatus (bool boolStatus)
+	public bool IsLocalStatus
 	{
-		if (_server.Local != boolStatus) _server.Local = boolStatus;
-		return boolStatus;
+		get => _server.Local;
+		set
+		{
+			if (_server.Local != value)
+			{
+				_server.Local = value;
+				OnPropertyChanged();
+			}
+		}
 	}
 
 	public int ServerPort
@@ -46,6 +53,7 @@ public class MainViewModel : ViewModelBase
 			if (_server.Port != value)
 			{
 				_server.Port = value;
+				OnPropertyChanged();
 			}
 		}
 		
