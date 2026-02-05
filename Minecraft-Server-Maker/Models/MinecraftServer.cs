@@ -24,7 +24,7 @@ public class MinecraftServer
 
 			if (!File.Exists(javaPath))
 			{
-				System.Windows.MessageBox.Show("Jar file doesn't exist!");
+				System.Windows.MessageBox.Show($"Jar file doesn't exist! Found in: {javaPath}");
 				return;
 			}
 
