@@ -2,6 +2,7 @@
 obj/
 [Dd]ebug/
 [Rr]elease/
+[Rr]untime/
 
 .idea/
 *.user
