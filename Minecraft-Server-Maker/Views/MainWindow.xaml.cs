@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Minecraft_Server_Maker.ViewModels;
-namespace Minecraft_Server_Maker;
+namespace Minecraft_Server_Maker.Views;
 
 public partial class MainWindow : Window
 {
@@ -19,4 +19,5 @@ public partial class MainWindow : Window
 
 		this.DataContext = new MainViewModel();
 	}
+	
 }
