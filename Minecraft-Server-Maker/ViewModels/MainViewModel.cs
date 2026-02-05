@@ -7,6 +7,8 @@ namespace Minecraft_Server_Maker.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
+
+	private bool isInt;
 	private MinecraftServer _server = new();
 	
 	public string JarPathDisplay => string.IsNullOrEmpty(_server.JarPath) ? "Not chosen file" : System.IO.Path.GetFileName(_server.JarPath);
@@ -29,20 +31,24 @@ public class MainViewModel : ViewModelBase
 			OnPropertyChanged(nameof(JarPathDisplay));
 		}
 	}
-
-	public void CheckedLocalStatus()
-	{
-		LocalStatus(true);
-	}
-
-	public void UnCheckedLocalStatus()
-	{
-		LocalStatus(false);
-	}
+	
 	public bool LocalStatus (bool boolStatus)
 	{
 		if (_server.Local != boolStatus) _server.Local = boolStatus;
 		return boolStatus;
+	}
+
+	public int ServerPort
+	{
+		get => _server.Port;
+		set
+		{
+			if (_server.Port != value)
+			{
+				_server.Port = value;
+			}
+		}
+		
 	}
 
 	public string ServerName
@@ -58,3 +64,4 @@ public class MainViewModel : ViewModelBase
 		}
 	}
 }
+
