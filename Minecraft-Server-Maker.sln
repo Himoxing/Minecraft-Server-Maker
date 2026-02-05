@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minecraft-Server-Maker", "Minecraft-Server-Maker\Minecraft-Server-Maker.csproj", "{22DD00C2-E9C6-4B56-AE40-1C2EB7221BCA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{22DD00C2-E9C6-4B56-AE40-1C2EB7221BCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22DD00C2-E9C6-4B56-AE40-1C2EB7221BCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22DD00C2-E9C6-4B56-AE40-1C2EB7221BCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22DD00C2-E9C6-4B56-AE40-1C2EB7221BCA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

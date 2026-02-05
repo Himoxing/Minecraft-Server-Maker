@@ -1,0 +1,13 @@
+﻿bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+.DS_Store
+thumbs.db
