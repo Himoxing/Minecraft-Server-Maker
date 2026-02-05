@@ -30,6 +30,21 @@ public class MainViewModel : ViewModelBase
 		}
 	}
 
+	public void CheckedLocalStatus()
+	{
+		LocalStatus(true);
+	}
+
+	public void UnCheckedLocalStatus()
+	{
+		LocalStatus(false);
+	}
+	public bool LocalStatus (bool boolStatus)
+	{
+		if (_server.Local != boolStatus) _server.Local = boolStatus;
+		return boolStatus;
+	}
+
 	public string ServerName
 	{
 		get => _server.Name;
