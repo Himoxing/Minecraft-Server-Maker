@@ -2,7 +2,7 @@
 
 namespace Minecraft_Server_Maker.ViewModels;
 
-public class MainViewModel
+public class MainViewModel : ViewModelBase
 {
 	private MinecraftServer _server = new();
 
@@ -14,6 +14,7 @@ public class MainViewModel
 			if (_server.Name != value)
 			{
 				_server.Name = value;
+				OnPropertyChanged();
 			}
 		}
 	}

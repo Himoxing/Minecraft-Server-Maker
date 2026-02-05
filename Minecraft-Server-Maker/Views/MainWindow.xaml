@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Label Content="Enter the Server Name: " />
+            <TextBox Text="{Binding ServerName, UpdateSourceTrigger=PropertyChanged}" Width="200" />
+            <TextBlock Text="{Binding ServerName}" Margin="10" FontSize="18" Foreground="Green" />
+        </StackPanel>
     </Grid>
 </Window>
