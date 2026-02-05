@@ -36,12 +36,8 @@
         
         <StackPanel>
             <CheckBox Margin="300, 280" Content="Content Only Local Server" 
-                      FontSize="12" Checked="{Binding CheckedLocalStatus}" 
-                      Unchecked="{Binding UnCheckedLocalStatus}" />
+                      FontSize="12" IsChecked="{Binding LocalStatus}"/>
         </StackPanel>
         
-        <StackPanel>
-            <!-- Przygotowac NumberBoxa -->
-        </StackPanel>
     </Grid>
 </Window>
