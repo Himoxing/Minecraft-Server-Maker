@@ -14,10 +14,15 @@ public class MainViewModel : ViewModelBase
 	public string JarPathDisplay => string.IsNullOrEmpty(_server.JarPath) ? "Not chosen file" : System.IO.Path.GetFileName(_server.JarPath);
 	
 	public ICommand SelectJarCommand { get; }
-
+	
+	public ICommand CreateServerCommand { get; }
+	
 	public MainViewModel()
 	{
 		SelectJarCommand = new RelayCommand(_ => SelectJarFile());
+		
+		CreateServerCommand = new RelayCommand(_ => _server.CreateAndRun());
+
 	}
 
 	private void SelectJarFile()
