@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using Minecraft_Server_Maker.Models;
 using System.Windows.Input;
+using System.Net.Http;
 using Microsoft.Win32;
 
 namespace Minecraft_Server_Maker.ViewModels;
@@ -10,7 +11,69 @@ public class MainViewModel : ViewModelBase
 
 	private bool isInt;
 	private MinecraftServer _server = new();
-	
+
+	private string _status = "Offline";
+	private string _publicIp = "Loading...";
+
+	public string Status
+	{
+		get => _status;
+
+		set
+		{
+			if (_status != value)
+			{
+				_status = value;
+				OnPropertyChanged();
+			}
+		}
+	}
+
+	public string PublicIp
+	{
+		get => _publicIp;
+		set
+		{
+			if (_publicIp != value)
+			{
+				_publicIp = value;
+				OnPropertyChanged();
+			}
+		}
+	}
+
+	private async void StartServer()
+	{
+		_server.CreateAndRun();
+
+		if (_server.IsServerRunning == true)
+		{
+			Status = "Running...";
+
+			if (IsLocalStatus == false)
+			{
+				PublicIp = await FetchPublicIp() + ":" + _server.Port.ToString();
+			}
+			else
+			{
+				PublicIp = "127.0.0.1" + ":" + _server.Port.ToString();
+			}
+		}
+	}
+
+	private async Task<string> FetchPublicIp()
+	{
+		try
+		{
+			using var client = new HttpClient();
+			return await client.GetStringAsync("https://api.ipify.org/");
+		}
+		catch
+		{
+			return "Check internet connection";
+		}
+	}
+
 	public string JarPathDisplay => string.IsNullOrEmpty(_server.JarPath) ? "Not chosen file" : System.IO.Path.GetFileName(_server.JarPath);
 	
 	public ICommand SelectJarCommand { get; }
@@ -21,7 +84,7 @@ public class MainViewModel : ViewModelBase
 	{
 		SelectJarCommand = new RelayCommand(_ => SelectJarFile());
 		
-		CreateServerCommand = new RelayCommand(_ => _server.CreateAndRun());
+		CreateServerCommand = new RelayCommand(_ => StartServer());
 
 	}
 

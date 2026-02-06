@@ -8,13 +8,13 @@ public class MinecraftServer
 	public string Name { get; set; } = "My Server";
 	public string JarPath { get; set; } = string.Empty;
 	public int RamMb { get; set; } = 2048;
-	
-	
 	public bool Local { get; set; } = false;
-	public int Port { get; set; } = 80;
-	
+	public int Port { get; set; } = 25565;
 	public bool Premium { get; set; } = true;
 	public bool WhiteListed { get; set; } = false;
+	private Process? _serverProcess;
+	
+	public bool IsServerRunning => _serverProcess != null && !_serverProcess.HasExited;
 
 	public void CreateAndRun()
 	{
@@ -52,7 +52,7 @@ public class MinecraftServer
 				UseShellExecute = true,
 			};
 
-			Process.Start(psi);
+			_serverProcess = Process.Start(psi);
 		}
 
 		catch (Exception ex)

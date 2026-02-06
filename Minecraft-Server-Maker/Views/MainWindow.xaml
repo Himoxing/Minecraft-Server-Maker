@@ -6,58 +6,70 @@
         xmlns:local="clr-namespace:Minecraft_Server_Maker"
         mc:Ignorable="d"
         Title="[MSM.NET]"
-        Width="620" Height="620"
+        Width="620" Height="900"
         WindowStartupLocation="CenterScreen"
         Background="#0f0f0f"
         Foreground="Azure"
         FontFamily="Segoe UI Variable Display, Segoe UI, sans-serif">
-   <Window.Resources>
+    <Window.Resources>
         <Style x:Key="ModernButton" TargetType="Button">
-            <Setter Property="Background" Value="#252525"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Padding" Value="15,8"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="#333"/>
-            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Background" Value="#252525" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Padding" Value="15,8" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="#333" />
+            <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="8" 
-                                BorderBrush="{TemplateBinding BorderBrush}" 
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="8"
+                                BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#333333"/>
-                    <Setter Property="BorderBrush" Value="#444"/>
+                    <Setter Property="Background" Value="#333333" />
+                    <Setter Property="BorderBrush" Value="#444" />
                 </Trigger>
             </Style.Triggers>
         </Style>
-
-        <Style TargetType="TextBox">
-            <Setter Property="Background" Value="#1A1A1A"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderBrush" Value="#333"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="10,8"/>
+        <Style x:Key="ModernCheckBox" TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#BBB"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Margin" Value="0,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#1A1A1A" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="#333" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="10,8" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
-                        <Border x:Name="border" CornerRadius="6" 
-                                Background="{TemplateBinding Background}" 
-                                BorderBrush="{TemplateBinding BorderBrush}" 
+                        <Border x:Name="border" CornerRadius="6"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}">
                             <ScrollViewer x:Name="PART_ContentHost" Focusable="false" />
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsFocused" Value="True">
-                                <Setter TargetName="border" Property="BorderBrush" Value="#0078D4"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#0078D4" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -68,69 +80,100 @@
 
     <Grid Margin="30">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/> <RowDefinition Height="*"/>    <RowDefinition Height="Auto"/> </Grid.RowDefinitions>
+            <RowDefinition Height="Auto" /> <RowDefinition Height="*" />    <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Margin="0,0,0,30">
-            <TextBlock Text="M S M . N E T" FontSize="10" FontWeight="Bold" Foreground="#0078D4" Margin="0,0,0,5"/>
-            <TextBlock Text="Server Creator" FontSize="32" FontWeight="SemiBold" Foreground="White"/>
-            <TextBlock Text="OpenSource Minecraft Server Maker in C# .NET" Foreground="#888" FontSize="14" Margin="0,5,0,0"/>
+            <TextBlock Text="M S M . N E T" FontSize="10" FontWeight="Bold" Foreground="#0078D4" Margin="0,0,0,5" />
+            <TextBlock Text="Server Creator" FontSize="32" FontWeight="SemiBold" Foreground="White" />
+            <TextBlock Text="OpenSource Minecraft Server Maker in C# .NET" Foreground="#888" FontSize="14"
+                       Margin="0,5,0,0" />
         </StackPanel>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="0,0,10,0">
+    <StackPanel> 
+        
+        <StackPanel>
+            <TextBlock Text="Server Executable (.jar)" FontWeight="Medium" Margin="0,0,0,8" Foreground="#BBB" />
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Border Background="#1A1A1A" CornerRadius="6" BorderBrush="#333" BorderThickness="1" Padding="12,8">
+                    <TextBlock Text="{Binding JarPathDisplay, FallbackValue='No file selected...'}"
+                               Foreground="#666" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                </Border>
+                <Button Grid.Column="1" Content="Browse"
+                        Command="{Binding SelectJarCommand}"
+                        Style="{StaticResource ModernButton}"
+                        Margin="10,0,0,0" Width="80" />
+            </Grid>
+
+            <Separator Background="#222" Margin="0,5,0,20" Height="1" BorderThickness="0" />
+
+            <TextBlock Text="Server Display Name" FontWeight="Medium" Margin="0,0,0,8" Foreground="#BBB" />
+            <TextBox Text="{Binding ServerName, UpdateSourceTrigger=PropertyChanged}"
+                     Height="40" FontSize="14" Margin="0,0,0,5" />
+            <TextBlock Text="{Binding ServerName}" Foreground="#4CAF50" FontSize="12" Margin="5,0,0,20" Opacity="0.8" />
+
+            <TextBlock Text="Network Port" FontWeight="Medium" Margin="0,0,0,8" Foreground="#BBB" />
+            <TextBox Text="{Binding ServerPort, UpdateSourceTrigger=PropertyChanged}"
+                     Height="40" Width="120" HorizontalAlignment="Left" FontSize="14" Margin="0,0,0,20" />
+
+            <Separator Background="#222" Margin="0,5,0,20" Height="1" BorderThickness="0" />
+
+            
+            <Border Background="#141414" 
+                    CornerRadius="10" 
+                    Padding="10" 
+                    BorderBrush="#252525" 
+                    BorderThickness="1" 
+                    Margin="0,0,0,25">
+                <StackPanel>
+                    <TextBlock Text="SERVER CONFIGURATION" 
+                               FontSize="10" 
+                               FontWeight="Bold" 
+                               Foreground="#444" 
+                               Margin="0,0,0,12" />
+
+                    <CheckBox Foreground="#BBB" Content="Only Local Host" 
+                              IsChecked="{Binding IsLocalOnly}" 
+                              Style="{StaticResource ModernCheckBox}"/>
+
+                    <CheckBox Foreground="#BBB" Content="Enable Whitelist" 
+                              IsChecked="{Binding IsWhiteListed}" 
+                              Style="{StaticResource ModernCheckBox}"/>
+
+                    <CheckBox Foreground="#BBB" Content="Premium Mode" 
+                              IsChecked="{Binding IsPremium}" 
+                              Style="{StaticResource ModernCheckBox}"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+        <Border Background="#1A1A1A" CornerRadius="10" Padding="15" BorderBrush="#333" BorderThickness="1" Margin="0,20,0,0">
             <StackPanel>
-                
-                <TextBlock Text="Server Executable (.jar)" FontWeight="Medium" Margin="0,0,0,8" Foreground="#BBB"/>
-                <Grid Margin="0,0,0,20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Border Background="#1A1A1A" CornerRadius="6" BorderBrush="#333" BorderThickness="1" Padding="12,8">
-                        <TextBlock Text="{Binding JarPathDisplay, FallbackValue='No file selected...'}" 
-                                   Foreground="#666" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-                    </Border>
-                    <Button Grid.Column="1" Content="Browse" 
-                            Command="{Binding SelectJarCommand}" 
-                            Style="{StaticResource ModernButton}" 
-                            Margin="10,0,0,0" Width="80"/>
+                <Grid>
+                    <TextBlock Text="LIVE STATUS" FontSize="12" FontWeight="Bold" Foreground="#888" />
+                    <TextBlock Text="{Binding Status}" HorizontalAlignment="Right" FontSize="12" FontWeight="Bold" Foreground="#4CAF50" />
                 </Grid>
 
-                <Separator Background="#222" Margin="0,5,0,20" Height="1" BorderThickness="0"/>
-
-                <TextBlock Text="Server Display Name" FontWeight="Medium" Margin="0,0,0,8" Foreground="#BBB"/>
-                <TextBox Text="{Binding ServerName, UpdateSourceTrigger=PropertyChanged}" 
-                         Height="40" FontSize="14" Margin="0,0,0,5"/>
-                <TextBlock Text="{Binding ServerName}" Foreground="#4CAF50" FontSize="12" Margin="5,0,0,20" Opacity="0.8"/>
-
-                <TextBlock Text="Network Port" FontWeight="Medium" Margin="0,0,0,8" Foreground="#BBB"/>
-                <TextBox Text="{Binding ServerPort, UpdateSourceTrigger=PropertyChanged}" 
-                         Height="40" Width="120" HorizontalAlignment="Left" FontSize="14" Margin="0,0,0,20"/>
-
-                <CheckBox Content="Only Local Host" 
-                          IsChecked="{Binding IsLocalOnly}"
-                          Foreground="#BBB" 
-                          VerticalContentAlignment="Center"/>
-                
-                <CheckBox Content="WhiteList On"
-                          IsChecked="{Binding IsWhiteListed}"
-                          Foreground="#BBB"
-                          VerticalContentAlignment="Center"/>
-
-                <CheckBox Content="Premium Mode"
-                          IsChecked="{Binding IsPremium}"
-                          Foreground="#BBB"
-                          VerticalAlignment="Center"/>
-
+                <Separator Background="#333" Margin="0,15" />
+                <Grid>
+                <TextBlock Text="ADDRESS IP"  FontWeight="Bold" FontSize="12" Foreground="#888" Margin="0,0,0,8" />
+                <TextBlock Text="{Binding PublicIp}" Foreground="#0078D4" FontSize="12" FontWeight="Bold" HorizontalAlignment="Right" />
+                </Grid>
             </StackPanel>
-            
-            
-        </ScrollViewer>
+        </Border>
 
-        <Button Grid.Row="2" Content="CREATE SERVER" 
+    </StackPanel> </ScrollViewer>
+
+        <Button Grid.Row="2" Content="CREATE SERVER"
                 Height="50" FontSize="14" FontWeight="Bold"
-                Background="#0078D4" 
+                Background="#0078D4"
                 Command="{Binding CreateServerCommand}" BorderBrush="#0078D4"
                 Style="{StaticResource ModernButton}"
-                Margin="0,20,0,0"/>
+                Margin="0,20,0,0" />
     </Grid>
 </Window>
