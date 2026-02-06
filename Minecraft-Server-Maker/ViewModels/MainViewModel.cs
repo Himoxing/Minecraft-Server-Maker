@@ -1,6 +1,8 @@
 ﻿using System.Windows.Input;
 using Minecraft_Server_Maker.Models;
 using System.Windows.Input;
+using System.Net;
+using System.Net.Sockets;
 using System.Net.Http;
 using Microsoft.Win32;
 
@@ -8,12 +10,22 @@ namespace Minecraft_Server_Maker.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-
 	private bool isInt;
 	private MinecraftServer _server = new();
 
 	private string _status = "Offline";
 	private string _publicIp = "Loading...";
+	private string _localIp = "Loading...";
+
+	public string LocalIp
+	{
+		get => _localIp;
+		set
+		{ 
+			_localIp = value;
+			OnPropertyChanged();
+		}
+	}
 
 	public string Status
 	{
@@ -50,12 +62,15 @@ public class MainViewModel : ViewModelBase
 		{
 			Status = "Running...";
 
+				
 			if (IsLocalStatus == false)
 			{
+				LocalIp = GetLocalIPv4() + ":" + _server.Port;
 				PublicIp = await FetchPublicIp() + ":" + _server.Port.ToString();
 			}
 			else
 			{
+				LocalIp = "127.0.0.1" + ":" + _server.Port.ToString();
 				PublicIp = "127.0.0.1" + ":" + _server.Port.ToString();
 			}
 		}
@@ -74,18 +89,19 @@ public class MainViewModel : ViewModelBase
 		}
 	}
 
-	public string JarPathDisplay => string.IsNullOrEmpty(_server.JarPath) ? "Not chosen file" : System.IO.Path.GetFileName(_server.JarPath);
-	
+	public string JarPathDisplay => string.IsNullOrEmpty(_server.JarPath)
+		? "Not chosen file"
+		: System.IO.Path.GetFileName(_server.JarPath);
+
 	public ICommand SelectJarCommand { get; }
-	
+
 	public ICommand CreateServerCommand { get; }
-	
+
 	public MainViewModel()
 	{
 		SelectJarCommand = new RelayCommand(_ => SelectJarFile());
-		
-		CreateServerCommand = new RelayCommand(_ => StartServer());
 
+		CreateServerCommand = new RelayCommand(_ => StartServer());
 	}
 
 	private void SelectJarFile()
@@ -114,7 +130,7 @@ public class MainViewModel : ViewModelBase
 		}
 	}
 
-	
+
 	public bool IsWhiteListed
 	{
 		get => _server.WhiteListed;
@@ -128,6 +144,7 @@ public class MainViewModel : ViewModelBase
 			}
 		}
 	}
+
 	public bool IsLocalStatus
 	{
 		get => _server.Local;
@@ -152,7 +169,6 @@ public class MainViewModel : ViewModelBase
 				OnPropertyChanged();
 			}
 		}
-		
 	}
 
 	public string ServerName
@@ -167,5 +183,22 @@ public class MainViewModel : ViewModelBase
 			}
 		}
 	}
-}
 
+	public string GetLocalIPv4()
+	{
+		try
+		{
+			using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
+			{
+				socket.Connect("8.8.8.8", 65530);
+				IPEndPoint? endPoint = socket.LocalEndPoint as IPEndPoint;
+				return endPoint?.Address.ToString() ?? "127.0.0.1";
+			}
+		}
+		catch
+
+		{
+			return "127.0.0.1";
+		}
+	}
+}

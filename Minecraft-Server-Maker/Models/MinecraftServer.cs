@@ -36,11 +36,11 @@ public class MinecraftServer
 
 			File.WriteAllText(Path.Combine(serverDir, "eula.txt"), "eula=true");
 
-			string serverIp = Local ? "127.0.0.1" : "0.0.0.0";
+			string serverIp = Local ? "127.0.0.1" : "";
 			string properties = $"server-port={Port}\n" +
 			                    $"server-ip={serverIp}\n" +
-			                    $"white-list={WhiteListed.ToString()}\n" +
-			                    $"online-mode={Premium.ToString()}\n" +
+			                    $"white-list={WhiteListed.ToString().ToLower()}\n" +
+			                    $"online-mode={Premium.ToString().ToLower()}\n" +
 			                    $"motd={Name}";
 			File.WriteAllText(Path.Combine(serverDir, "server.properties"), properties);
 

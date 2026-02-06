@@ -161,8 +161,12 @@
 
                 <Separator Background="#333" Margin="0,15" />
                 <Grid>
-                <TextBlock Text="ADDRESS IP"  FontWeight="Bold" FontSize="12" Foreground="#888" Margin="0,0,0,8" />
-                <TextBlock Text="{Binding PublicIp}" Foreground="#0078D4" FontSize="12" FontWeight="Bold" HorizontalAlignment="Right" />
+                <TextBlock Text="LAN IPv4 Address"  FontWeight="Bold" FontSize="12" Foreground="#888" Margin="0,0,0,8" />
+                <TextBlock Text="{Binding LocalIp}" Foreground="#0078D4" FontSize="12" FontWeight="Bold" HorizontalAlignment="Right" />
+                </Grid>
+                <Grid>
+                    <TextBlock Text="Public IPv4 Address"  FontWeight="Bold" FontSize="12" Foreground="#888" Margin="0,0,0,8" />
+                    <TextBlock Text="{Binding PublicIp}" Foreground="#0078D4" FontSize="12" FontWeight="Bold" HorizontalAlignment="Right" />
                 </Grid>
             </StackPanel>
         </Border>
