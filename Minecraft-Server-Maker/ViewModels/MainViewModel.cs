@@ -36,7 +36,35 @@ public class MainViewModel : ViewModelBase
 			OnPropertyChanged(nameof(JarPathDisplay));
 		}
 	}
+
+	public bool IsPremium
+	{
+		get => _server.Premium;
+
+		set
+		{
+			if (_server.Premium != value)
+			{
+				_server.Premium = value;
+				OnPropertyChanged();
+			}
+		}
+	}
+
 	
+	public bool IsWhiteListed
+	{
+		get => _server.WhiteListed;
+
+		set
+		{
+			if (_server.WhiteListed != value)
+			{
+				_server.WhiteListed = value;
+				OnPropertyChanged();
+			}
+		}
+	}
 	public bool IsLocalStatus
 	{
 		get => _server.Local;

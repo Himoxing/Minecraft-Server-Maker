@@ -8,8 +8,13 @@ public class MinecraftServer
 	public string Name { get; set; } = "My Server";
 	public string JarPath { get; set; } = string.Empty;
 	public int RamMb { get; set; } = 2048;
+	
+	
 	public bool Local { get; set; } = false;
 	public int Port { get; set; } = 80;
+	
+	public bool Premium { get; set; } = true;
+	public bool WhiteListed { get; set; } = false;
 
 	public void CreateAndRun()
 	{
@@ -34,6 +39,8 @@ public class MinecraftServer
 			string serverIp = Local ? "127.0.0.1" : "0.0.0.0";
 			string properties = $"server-port={Port}\n" +
 			                    $"server-ip={serverIp}\n" +
+			                    $"white-list={WhiteListed.ToString()}\n" +
+			                    $"online-mode={Premium.ToString()}\n" +
 			                    $"motd={Name}";
 			File.WriteAllText(Path.Combine(serverDir, "server.properties"), properties);
 

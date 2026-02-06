@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Minecraft_Server_Maker"
         mc:Ignorable="d"
         Title="[MSM.NET]"
-        Width="620" Height="600"
+        Width="620" Height="620"
         WindowStartupLocation="CenterScreen"
         Background="#0f0f0f"
         Foreground="Azure"
@@ -106,12 +106,24 @@
                 <TextBox Text="{Binding ServerPort, UpdateSourceTrigger=PropertyChanged}" 
                          Height="40" Width="120" HorizontalAlignment="Left" FontSize="14" Margin="0,0,0,20"/>
 
-                <CheckBox Content="Local Only Mode" 
+                <CheckBox Content="Only Local Host" 
                           IsChecked="{Binding IsLocalOnly}"
                           Foreground="#BBB" 
                           VerticalContentAlignment="Center"/>
+                
+                <CheckBox Content="WhiteList On"
+                          IsChecked="{Binding IsWhiteListed}"
+                          Foreground="#BBB"
+                          VerticalContentAlignment="Center"/>
+
+                <CheckBox Content="Premium Mode"
+                          IsChecked="{Binding IsPremium}"
+                          Foreground="#BBB"
+                          VerticalAlignment="Center"/>
 
             </StackPanel>
+            
+            
         </ScrollViewer>
 
         <Button Grid.Row="2" Content="CREATE SERVER" 
