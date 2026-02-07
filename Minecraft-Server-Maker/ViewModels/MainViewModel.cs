@@ -143,6 +143,19 @@ public class MainViewModel : ViewModelBase
 		OnPropertyChanged(nameof(ActionButtonText));
 		OnPropertyChanged(nameof(ActionButtonColor));
 	}
+
+	public void OnWindowClosing()
+	{
+		if (_server?.ServerProcess != null && _server.ServerProcess.HasExited);
+		{
+			try
+			{
+				_server.ServerProcess.Kill();
+				_server.ServerProcess.Dispose();
+			}
+			catch {}
+		}
+	}
 	
 	public string ActionButtonText => _server.IsServerRunning ? "STOP SERVER" : "CREATE SERVER";
 	public string ActionButtonColor => _server.IsServerRunning ? "#D32F2F" : "#0078D4";

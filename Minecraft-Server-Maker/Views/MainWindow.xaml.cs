@@ -20,5 +20,14 @@ public partial class MainWindow : Window
 
 		this.DataContext = new MainViewModel();
 	}
+
+	protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+	{
+		if (DataContext is MainViewModel vm)
+		{
+			vm.OnWindowClosing();
+		}
+		base.OnClosing(e);
+	}
 	
 }
