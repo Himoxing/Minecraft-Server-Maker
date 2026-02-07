@@ -1,22 +1,38 @@
-﻿using System.Windows.Input;
-using Minecraft_Server_Maker.Models;
+﻿using Minecraft_Server_Maker.Models;
 using System.Windows.Input;
-using System.Net;
-using System.Net.Sockets;
-using System.Net.Http;
 using Microsoft.Win32;
+using Minecraft_Server_Maker.Services.Interfaces;
+using Minecraft_Server_Maker.Services;
 
 namespace Minecraft_Server_Maker.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-	private bool isInt;
-	private MinecraftServer _server = new();
-
+	private MinecraftServer _server;
+	private ServerSettings _settings;
+	private readonly IServerLauncher _launcher;
+	private readonly INetworkService _network;
+	private readonly IConfigService _config;
 	private string _status = "Offline";
-	private string _publicIp = "Loading...";
-	private string _localIp = "Loading...";
+	private string _publicIp = "---";
+	private string _localIp = "---";
+	public ServerConfigViewModel Config { get; }
 
+	
+	public MainViewModel()
+	{
+		SelectJarCommand = new RelayCommand(_ => Config.SelectJarFile());
+		CreateServerCommand = new RelayCommand(_ => StartServer());
+		
+		_config = new ConfigService();
+		_launcher = new ServerLauncher(_config);
+		_network = new NetworkService();
+		_settings = new ServerSettings();
+		_server = new MinecraftServer();
+		Config = new ServerConfigViewModel(_settings, _server);
+
+	}
+	
 	public string LocalIp
 	{
 		get => _localIp;
@@ -56,149 +72,49 @@ public class MainViewModel : ViewModelBase
 
 	private async void StartServer()
 	{
-		_server.CreateAndRun();
-
-		if (_server.IsServerRunning == true)
-		{
-			Status = "Running...";
-
-				
-			if (IsLocalStatus == false)
-			{
-				LocalIp = GetLocalIPv4() + ":" + _server.Port;
-				PublicIp = await FetchPublicIp() + ":" + _server.Port.ToString();
-			}
-			else
-			{
-				LocalIp = "127.0.0.1" + ":" + _server.Port.ToString();
-				PublicIp = "127.0.0.1" + ":" + _server.Port.ToString();
-			}
-		}
-	}
-
-	private async Task<string> FetchPublicIp()
-	{
 		try
 		{
-			using var client = new HttpClient();
-			return await client.GetStringAsync("https://api.ipify.org/");
+			Status = "Starting...";
+
+			_launcher.Launch(_server, _settings);
+
+			if (_server.IsServerRunning)
+			{
+				Status = "Running";
+
+				_server.ServerProcess.Exited += (s, e) =>
+				{
+					Status = "Offline";
+					LocalIp = "---";
+					PublicIp = "---";
+				};
+				int port = _settings.Port;
+
+				if (!Config.IsLocalStatus)
+				{
+					LocalIp = _network.GetLocalIp();
+					Status = "Fetching public IP...";
+					string publicIp = await _network.GetPublicIpAsync();
+					PublicIp = publicIp + ":" + port;
+				}
+
+				else
+				{
+					LocalIp = "127.0.0.1" + ":" + port;
+					PublicIp = "Not available (Local Mode)";
+				}
+
+				Status = "Online";
+			}
+
+			else Status = "Failed to start server";
 		}
-		catch
+		catch (Exception ex)
 		{
-			return "Check internet connection";
+			Status = "Error: " + ex.Message;
 		}
 	}
-
-	public string JarPathDisplay => string.IsNullOrEmpty(_server.JarPath)
-		? "Not chosen file"
-		: System.IO.Path.GetFileName(_server.JarPath);
-
 	public ICommand SelectJarCommand { get; }
 
 	public ICommand CreateServerCommand { get; }
-
-	public MainViewModel()
-	{
-		SelectJarCommand = new RelayCommand(_ => SelectJarFile());
-
-		CreateServerCommand = new RelayCommand(_ => StartServer());
-	}
-
-	private void SelectJarFile()
-	{
-		OpenFileDialog openFileDialog = new OpenFileDialog();
-		openFileDialog.Filter = "Jar files (*.jar)|*.jar";
-
-		if (openFileDialog.ShowDialog() == true)
-		{
-			_server.JarPath = openFileDialog.FileName;
-			OnPropertyChanged(nameof(JarPathDisplay));
-		}
-	}
-
-	public bool IsPremium
-	{
-		get => _server.Premium;
-
-		set
-		{
-			if (_server.Premium != value)
-			{
-				_server.Premium = value;
-				OnPropertyChanged();
-			}
-		}
-	}
-
-
-	public bool IsWhiteListed
-	{
-		get => _server.WhiteListed;
-
-		set
-		{
-			if (_server.WhiteListed != value)
-			{
-				_server.WhiteListed = value;
-				OnPropertyChanged();
-			}
-		}
-	}
-
-	public bool IsLocalStatus
-	{
-		get => _server.Local;
-		set
-		{
-			if (_server.Local != value)
-			{
-				_server.Local = value;
-				OnPropertyChanged();
-			}
-		}
-	}
-
-	public int ServerPort
-	{
-		get => _server.Port;
-		set
-		{
-			if (_server.Port != value)
-			{
-				_server.Port = value;
-				OnPropertyChanged();
-			}
-		}
-	}
-
-	public string ServerName
-	{
-		get => _server.Name;
-		set
-		{
-			if (_server.Name != value)
-			{
-				_server.Name = value;
-				OnPropertyChanged();
-			}
-		}
-	}
-
-	public string GetLocalIPv4()
-	{
-		try
-		{
-			using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
-			{
-				socket.Connect("8.8.8.8", 65530);
-				IPEndPoint? endPoint = socket.LocalEndPoint as IPEndPoint;
-				return endPoint?.Address.ToString() ?? "127.0.0.1";
-			}
-		}
-		catch
-
-		{
-			return "127.0.0.1";
-		}
-	}
 }

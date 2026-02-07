@@ -101,7 +101,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Border Background="#1A1A1A" CornerRadius="6" BorderBrush="#333" BorderThickness="1" Padding="12,8">
-                    <TextBlock Text="{Binding JarPathDisplay, FallbackValue='No file selected...'}"
+                    <TextBlock Text="{Binding Config.JarPathDisplay, FallbackValue='No file selected...'}"
                                Foreground="#666" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
                 </Border>
                 <Button Grid.Column="1" Content="Browse"
@@ -113,12 +113,12 @@
             <Separator Background="#222" Margin="0,5,0,20" Height="1" BorderThickness="0" />
 
             <TextBlock Text="Server Display Name" FontWeight="Medium" Margin="0,0,0,8" Foreground="#BBB" />
-            <TextBox Text="{Binding ServerName, UpdateSourceTrigger=PropertyChanged}"
+            <TextBox Text="{Binding Config.ServerName, UpdateSourceTrigger=PropertyChanged}"
                      Height="40" FontSize="14" Margin="0,0,0,5" />
-            <TextBlock Text="{Binding ServerName}" Foreground="#4CAF50" FontSize="12" Margin="5,0,0,20" Opacity="0.8" />
+            <TextBlock Text="{Binding Config.ServerName}" Foreground="#4CAF50" FontSize="12" Margin="5,0,0,20" Opacity="0.8" />
 
             <TextBlock Text="Network Port" FontWeight="Medium" Margin="0,0,0,8" Foreground="#BBB" />
-            <TextBox Text="{Binding ServerPort, UpdateSourceTrigger=PropertyChanged}"
+            <TextBox Text="{Binding Config.ServerPort, UpdateSourceTrigger=PropertyChanged}"
                      Height="40" Width="120" HorizontalAlignment="Left" FontSize="14" Margin="0,0,0,20" />
 
             <Separator Background="#222" Margin="0,5,0,20" Height="1" BorderThickness="0" />
@@ -138,15 +138,15 @@
                                Margin="0,0,0,12" />
 
                     <CheckBox Foreground="#BBB" Content="Only Local Host" 
-                              IsChecked="{Binding IsLocalOnly}" 
+                              IsChecked="{Binding Config.IsLocalOnly}" 
                               Style="{StaticResource ModernCheckBox}"/>
 
                     <CheckBox Foreground="#BBB" Content="Enable Whitelist" 
-                              IsChecked="{Binding IsWhiteListed}" 
+                              IsChecked="{Binding Config.IsWhiteListed}" 
                               Style="{StaticResource ModernCheckBox}"/>
 
                     <CheckBox Foreground="#BBB" Content="Premium Mode" 
-                              IsChecked="{Binding IsPremium}" 
+                              IsChecked="{Binding Config.IsPremium}" 
                               Style="{StaticResource ModernCheckBox}"/>
                 </StackPanel>
             </Border>
