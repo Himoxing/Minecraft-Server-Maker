@@ -72,6 +72,23 @@ public class MainViewModel : ViewModelBase
 
 	private async void StartServer()
 	{
+
+		if (_server.IsServerRunning == true)
+		{
+			try
+			{
+				Status = "Stopping...";
+				_server.ServerProcess?.Kill();
+				Status = "Offline";
+				OnPropertyChanged(nameof(ActionButtonText));
+				OnPropertyChanged(nameof(ActionButtonColor));
+			}
+			catch (Exception ex)
+			{
+				Status = "Error stopping: " + ex.Message;
+			}
+			return;
+		}
 		try
 		{
 			Status = "Starting...";
@@ -113,7 +130,13 @@ public class MainViewModel : ViewModelBase
 		{
 			Status = "Error: " + ex.Message;
 		}
+		
+		OnPropertyChanged(nameof(ActionButtonText));
+		OnPropertyChanged(nameof(ActionButtonColor));
 	}
+	
+	public string ActionButtonText => _server.IsServerRunning ? "STOP SERVER" : "CREATE SERVER";
+	public string ActionButtonColor => _server.IsServerRunning ? "#D32F2F" : "#0078D4";
 	public ICommand SelectJarCommand { get; }
 
 	public ICommand CreateServerCommand { get; }

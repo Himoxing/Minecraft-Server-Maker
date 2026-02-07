@@ -173,9 +173,9 @@
 
     </StackPanel> </ScrollViewer>
 
-        <Button Grid.Row="2" Content="CREATE SERVER"
+        <Button Grid.Row="2" Content="{Binding ActionButtonText}"
                 Height="50" FontSize="14" FontWeight="Bold"
-                Background="#0078D4"
+                Background="{Binding ActionButtonColor}"
                 Command="{Binding CreateServerCommand}" BorderBrush="#0078D4"
                 Style="{StaticResource ModernButton}"
                 Margin="0,20,0,0" />
