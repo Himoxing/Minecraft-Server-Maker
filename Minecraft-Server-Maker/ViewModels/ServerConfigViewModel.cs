@@ -1,17 +1,29 @@
 ﻿using Minecraft_Server_Maker.Models;
 using Microsoft.Win32;
-	
+using Minecraft_Server_Maker.Services;
 namespace Minecraft_Server_Maker.ViewModels;
 
 public class ServerConfigViewModel : ViewModelBase
 {
 	private readonly ServerSettings _settings;
 	private readonly MinecraftServer _server;
+	private readonly MemoryMonitor _memory;
 
+	public double FreeMemory { get; private set; }
+	public double TotalMemory { get; private set; }
+	
 	public ServerConfigViewModel(ServerSettings settings, MinecraftServer server)
 	{
 		_settings = settings;
 		_server = server;
+		_memory = new MemoryMonitor();
+
+		TotalMemory = _memory.GetTotalRamBytes(Units.Megabyte);
+		FreeMemory = _memory.GetFreeRamBytes(Units.Megabyte);
+		Console.WriteLine("In ServerConfigViewModel " + TotalMemory);
+		Console.WriteLine("In Memory Monitor (free)" + FreeMemory);
+
+		if (_server.setRam < 1024) _server.setRam = 2048;
 	}
 
 	public string JarPathDisplay => string.IsNullOrEmpty(_server.JarPath)
@@ -84,6 +96,24 @@ public class ServerConfigViewModel : ViewModelBase
 			}
 		}
 	}
+
+
+
+	public double SetMemory
+	{
+		get => _server.setRam;
+
+		set
+		{
+			if (_server.setRam != value)
+			{
+				_server.setRam = Math.Clamp(value, 1024, FreeMemory);
+				OnPropertyChanged();
+			}
+		}
+	}
+
+
 
 	public string ServerName
 	{

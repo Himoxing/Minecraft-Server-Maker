@@ -18,26 +18,25 @@ public class MainViewModel : ViewModelBase
 	private string _localIp = "---";
 	public ServerConfigViewModel Config { get; }
 
-	
+
 	public MainViewModel()
 	{
 		SelectJarCommand = new RelayCommand(_ => Config.SelectJarFile());
 		CreateServerCommand = new RelayCommand(_ => StartServer());
-		
+
 		_config = new ConfigService();
 		_launcher = new ServerLauncher(_config);
 		_network = new NetworkService();
 		_settings = new ServerSettings();
 		_server = new MinecraftServer();
 		Config = new ServerConfigViewModel(_settings, _server);
-
 	}
-	
+
 	public string LocalIp
 	{
 		get => _localIp;
 		set
-		{ 
+		{
 			_localIp = value;
 			OnPropertyChanged();
 		}
@@ -81,8 +80,7 @@ public class MainViewModel : ViewModelBase
 
 	private async void StartServer()
 	{
-
-		if (_server.IsServerRunning == true)
+		if (_server.IsServerRunning)
 		{
 			try
 			{
@@ -96,8 +94,10 @@ public class MainViewModel : ViewModelBase
 			{
 				Status = "Error stopping: " + ex.Message;
 			}
+
 			return;
 		}
+
 		try
 		{
 			Status = "Starting...";
@@ -108,11 +108,17 @@ public class MainViewModel : ViewModelBase
 			{
 				Status = "Running";
 
+				_server.ServerProcess.EnableRaisingEvents = true;
 				_server.ServerProcess.Exited += (s, e) =>
 				{
-					Status = "Offline";
-					LocalIp = "---";
-					PublicIp = "---";
+					App.Current.Dispatcher.Invoke(() =>
+					{
+						Status = "Offline";
+						LocalIp = "---";
+						PublicIp = "---";
+						OnPropertyChanged(nameof(ActionButtonText));
+						OnPropertyChanged(nameof(ActionButtonColor));
+					});
 				};
 				int port = _settings.Port;
 
@@ -139,27 +145,32 @@ public class MainViewModel : ViewModelBase
 		{
 			Status = "Error: " + ex.Message;
 		}
-		
+
 		OnPropertyChanged(nameof(ActionButtonText));
 		OnPropertyChanged(nameof(ActionButtonColor));
 	}
 
-	public void OnWindowClosing()
+public void OnWindowClosing()
+{
+	if (_server?.ServerProcess != null && _server.ServerProcess.HasExited)
 	{
-		if (_server?.ServerProcess != null && _server.ServerProcess.HasExited);
+		try
 		{
-			try
-			{
-				_server.ServerProcess.Kill();
-				_server.ServerProcess.Dispose();
-			}
-			catch {}
+			_server.ServerProcess.Kill();
+			_server.ServerProcess.Dispose();
 		}
+		catch
+		{ }
 	}
-	
-	public string ActionButtonText => _server.IsServerRunning ? "STOP SERVER" : "CREATE SERVER";
-	public string ActionButtonColor => _server.IsServerRunning ? "#D32F2F" : "#0078D4";
-	public ICommand SelectJarCommand { get; }
+}
 
-	public ICommand CreateServerCommand { get; }
+public string ActionButtonText => _server.IsServerRunning ? "STOP SERVER" : "CREATE SERVER";
+public string ActionButtonColor => _server.IsServerRunning ? "#D32F2F" : "#0078D4";
+public ICommand SelectJarCommand {
+	get;
+}
+
+public ICommand CreateServerCommand {
+	get;
+}
 }

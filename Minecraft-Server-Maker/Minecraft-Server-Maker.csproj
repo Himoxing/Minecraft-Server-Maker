@@ -17,4 +17,8 @@
       </Page>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="System.Management" Version="10.0.2" />
+    </ItemGroup>
+
 </Project>

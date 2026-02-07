@@ -45,7 +45,7 @@ public class ServerLauncher : IServerLauncher
 			ProcessStartInfo psi = new ProcessStartInfo
 			{
 				FileName = javaPath,
-				Arguments = $"-Xmx{_server.RamMb}M -jar \"{_server.JarPath}\" nogui",
+				Arguments = $"-Xmx{_server.setRam}M -jar \"{_server.JarPath}\" nogui",
 				WorkingDirectory = serverDir, 
 			};
 
