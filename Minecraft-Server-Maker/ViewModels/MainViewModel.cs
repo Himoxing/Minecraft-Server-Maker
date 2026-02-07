@@ -57,6 +57,15 @@ public class MainViewModel : ViewModelBase
 		}
 	}
 
+	public bool UseShellExecute
+	{
+		get => _server.UseShellExecute;
+		set
+		{
+			if (_server.UseShellExecute != value) _server.UseShellExecute = value;
+		}
+	}
+
 	public string PublicIp
 	{
 		get => _publicIp;

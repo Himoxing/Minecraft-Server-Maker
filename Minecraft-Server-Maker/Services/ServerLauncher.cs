@@ -7,7 +7,6 @@ namespace Minecraft_Server_Maker.Services;
 
 public class ServerLauncher : IServerLauncher
 {
-	
 	private readonly IConfigService _configService;
 
 	public ServerLauncher(IConfigService configService)
@@ -20,7 +19,7 @@ public class ServerLauncher : IServerLauncher
 		try
 		{
 			string? serverDir = Path.GetDirectoryName(_server.JarPath);
-			
+
 			if (serverDir == null) return;
 
 			_configService.AcceptEula(serverDir);
@@ -34,7 +33,7 @@ public class ServerLauncher : IServerLauncher
 			};
 			_settings.ServerIp = _server.Local ? "127.0.0.1" : "";
 			_configService.SaveServerProperties(serverDir, serverSettings);
-			
+
 			string javaPath = Path.Combine(AppContext.BaseDirectory, "Runtime", "bin", "java.exe");
 
 			if (!File.Exists(javaPath))
@@ -42,19 +41,29 @@ public class ServerLauncher : IServerLauncher
 				System.Windows.MessageBox.Show($"Jar file doesn't exist! Found in: {javaPath}");
 				return;
 			}
-			
+
 			ProcessStartInfo psi = new ProcessStartInfo
 			{
 				FileName = javaPath,
 				Arguments = $"-Xmx{_server.RamMb}M -jar \"{_server.JarPath}\" nogui",
-				WorkingDirectory = serverDir,
-				UseShellExecute = false,
-				CreateNoWindow = true,
-				WindowStyle = ProcessWindowStyle.Hidden
+				WorkingDirectory = serverDir, 
 			};
 
+			if (_server.UseShellExecute)
+			{
+				psi.UseShellExecute = true;
+				psi.CreateNoWindow = false;
+				psi.WindowStyle = ProcessWindowStyle.Normal;
+			}
+			else
+			{
+				psi.UseShellExecute = false;
+				psi.CreateNoWindow = true;
+				psi.WindowStyle = ProcessWindowStyle.Hidden;
+			}
+
 			_server.ServerProcess = Process.Start(psi);
-			
+
 			if (_server.ServerProcess != null) _server.ServerProcess.EnableRaisingEvents = true;
 		}
 

@@ -7,6 +7,7 @@ public class MinecraftServer
 {
 	public string JarPath { get; set; } = string.Empty;
 	public int RamMb { get; set; } = 2048;
+	public bool UseShellExecute { get; set; } = false;
 	public bool Local { get; set; } = false;
 	public Process? ServerProcess { get; set; }
 	

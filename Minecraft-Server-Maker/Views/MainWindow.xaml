@@ -140,6 +140,10 @@
                     <CheckBox Foreground="#BBB" Content="Only Local Host" 
                               IsChecked="{Binding Config.IsLocalOnly}" 
                               Style="{StaticResource ModernCheckBox}"/>
+                    
+                    <CheckBox Foreground="#BBB" Content="Show Terminal" 
+                              IsChecked="{Binding UseShellExecute}" 
+                              Style="{StaticResource ModernCheckBox}"/>
 
                     <CheckBox Foreground="#BBB" Content="Enable Whitelist" 
                               IsChecked="{Binding Config.IsWhiteListed}" 
