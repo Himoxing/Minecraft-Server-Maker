@@ -36,7 +36,7 @@ To start your journey as a server owner, you need a server engine file.
 
    **Your folder structure should look like this:**
    ```text
-    MSM.NET/
+    {BaseDirectory}/
     └── bin/
         └── debug/
             └── runtime/
